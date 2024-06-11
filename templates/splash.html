@@ -297,7 +297,7 @@
 
 <div id="logo-container">
   <div>
-    <img class="logo" src="{{ url_for('logo') }}" width="500px" alt="logo" />
+    <img class="logo" src="{{ url_for('logo') }}" height="100vh" alt="logo" />
   </div>
 </div>
 
@@ -321,18 +321,14 @@
     </div>
   </div>
   {% endif %}
-  <div id="up-next" class="has-text-warning is-size-5 stroke has-text-right">
+  <div id="up-next" class="has-text-warning is-size-5 stroke">
     <b class="has-text-white"
       >{# MSG: Label for the next song to be played in the queue. #} {% trans
-      %}Up next:{% endtrans %}
-    </b>
+      %}NEXT UP{% endtrans %}
+    </b><br>
     <span id="up-next-song"></span>
     <div class="has-text-success">
-      <b class="has-text-white"
-        >{# MSG: Label for the next singer in the queue. #} {% trans %}Next
-        singer:{% endtrans %} </b
-      >&nbsp;<i class="icon icon-mic-1" title="Next singer"></i
-      ><span id="up-next-singer"></span>
+      <i class="icon icon-mic-1" title="Next singer"></i><span id="up-next-singer"></span>
     </div>
   </div>
 </div>
@@ -404,7 +400,7 @@
     overflow-y: hidden;
   }
   body {
-    background-color: black;
+    background-color: white;
   }
   #top-container,
   #ap-container,
@@ -439,6 +435,8 @@
   }
   #up-next {
     max-width: 75%;
+    background-color: black;
+    padding: 20px;
   }
   .video-container {
     position: absolute;
