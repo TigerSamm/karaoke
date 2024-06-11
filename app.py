@@ -43,8 +43,8 @@ app.jinja_env.add_extension('jinja2.ext.i18n')
 app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
 app.config['JSON_SORT_KEYS'] = False
 babel = Babel(app)
-site_name = "PiKaraoke"
-admin_password = None
+site_name = "Karaoke"
+admin_password = "pass162"
 is_raspberry_pi = get_platform() == "raspberry_pi"
 
 def filename_from_path(file_path, remove_youtube_id=True):
