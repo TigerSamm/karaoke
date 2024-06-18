@@ -55,7 +55,7 @@ Raspberry Pi 3 and above. Anything else will likely be too slow.
 Other pi considerations:
 
 - Should be running Raspberry pi desktop OS if running headed, since it requires a browser
-- 32-bit version of the Bullseye OS is recommended. 64-bit seemed slower in my testing, but pi4 and above can probably handle it. Bookworm seems to install an incompatible version of ffmpeg at the moment. Please avoid if possible ( see #323 )
+- 32-bit version of the OS is recommended. 64-bit seemed slower in my testing, but pi4 and above can probably handle it.
 - Disable "screen blanking" in raspi-config if you want to prevent the display from turning off when idle
 - Pi3 might struggle a bit with high-res video playback. Overclocking seems to help
 
@@ -70,7 +70,6 @@ Install git, if you haven't already.
 
 Install python3/pip3
 (usually raspberry pi OS already has it, run `python3 --version` to check): https://www.python.org/downloads/
-Python >= 3.8 is necessary
 
 Clone this repo:
 
@@ -91,13 +90,11 @@ Run the setup script to install dependencies and set up the python env:
 
 If you're on a raspberry pi or debian system the setup script should have handled installing ffmpeg via apt.
 
-If you're on OSX or another Linux distro, manually install the latest stable version FFMPEG 6.0 or greater from here: https://ffmpeg.org/download.html . Do not install experimental snapshot builds.
-
-On Ubuntu, apt seemed to keep installing an old 4.X version of ffmpeg. I found better luck grabbing a pre-built version of ffmpeg 6.0+ and manually copying it to /usr/bin/. Pre-built releases were obtained from this repo: https://github.com/BtbN/FFmpeg-Builds/releases
+If you're on OSX or another Linux distro, manually install FFMPEG from here: https://ffmpeg.org/download.html
 
 ### Windows
 
-Manually install ffmpeg 6.0 or greater https://ffmpeg.org/download.html
+Manually install ffmpeg https://ffmpeg.org/download.html
 
 Run the setup script to install python dependencies:
 
@@ -150,7 +147,7 @@ May not be up to date, run `python3 app.py --help` for the latest:
 ```
 usage: app.py [-h] [-p PORT] [-f FFMPEG_PORT] [-d DOWNLOAD_PATH] [-y YOUTUBEDL_PATH] [-v VOLUME] [-s SPLASH_DELAY] [-t SCREENSAVER_TIMEOUT]
               [-l LOG_LEVEL] [--hide-url] [--prefer-ip] [--hide-raspiwifi-instructions] [--hide-splash-screen] [--dual-screen] [--high-quality]
-              [--logo-path LOGO_PATH] [-u URL] [--hide-overlay] [--admin-password ADMIN_PASSWORD] [--window-size WIDTH,HEIGHT]
+              [--logo-path LOGO_PATH] [-u URL] [--hide-overlay] [--admin-password ADMIN_PASSWORD]
 
 options:
   -h, --help            show this help message and exit
@@ -170,8 +167,7 @@ options:
   -l LOG_LEVEL, --log-level LOG_LEVEL
                         Logging level int value (DEBUG: 10, INFO: 20, WARNING: 30, ERROR: 40, CRITICAL: 50). (default: 20 )
   --hide-url            Hide URL and QR code from the splash screen.
-  --prefer-hostname     Use the local hostname instead of the IP as the connection URL. Use at your discretion: mDNS is not guaranteed to work on all
-                        LAN configurations. Defaults to False
+  --prefer-ip           Show the IP instead of the fully qualified local domain name. Default: False
   --hide-raspiwifi-instructions
                         Hide RaspiWiFi setup instructions from the splash screen.
   --hide-splash-screen, --headless
@@ -184,8 +180,6 @@ options:
   --admin-password ADMIN_PASSWORD
                         Administrator password, for locking down certain features of the web UI such as queue editing, player controls, song editing,
                         and system shutdown. If unspecified, everyone is an admin.
-  --window-size WIDTH,HEIGHT
-                        Explicitly set the width and height of the splash screen, where the WIDTH and HEIGHT values are specified in pixels.
 ```
 
 ## Troubleshooting
@@ -268,9 +262,3 @@ You'll need to add them manually by copying them to the root of your download fo
 ### My mp3/cdg file is not playing
 
 CDG files must have an mp3 file with a exact matching file name. They can also be bundled together in a single zip file, but the filenames in the zip must still match. They must also be placed in the root of the download directory and not stashed away in sub-directories.
-
-### How do I dismiss the Splash confirmation screen on an in-TV browser? (like a Samsung TV with web browsing)
-
-The splash confirmation screen is an unfortunate necessity due to modern browser permissions disabling video autoplay. A single interaction will enable it, and the confirmation screen serves as this interaction. Hopefully your TV has a way to click the button on the screen with the remote or otherwise.
-
-If you want to try without confirmation, you can add a parameter to the end of the splash screen URL "confirm=false". Ex: `http://pikaraoke.local:5555/splash.html?confirm=false` but there's no guarantee that videos will play; it depends on the embedded browser implementation.

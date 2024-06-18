@@ -75,8 +75,7 @@ class Karaoke:
         hide_overlay=False,
         screensaver_timeout = 300,
         url=None,
-        ffmpeg_url=None,
-        prefer_hostname=True
+        prefer_ip=False
     ):
 
         # override with supplied constructor args if provided
@@ -94,7 +93,7 @@ class Karaoke:
         self.hide_overlay = hide_overlay
         self.screensaver_timeout = screensaver_timeout
         self.url_override = url
-        self.prefer_hostname = prefer_hostname
+        self.prefer_ip = prefer_ip
 
         # other initializations
         self.platform = get_platform()
@@ -111,7 +110,7 @@ class Karaoke:
     http port: {self.port}
     ffmpeg port {self.ffmpeg_port}
     hide URL: {self.hide_url}
-    prefer hostname: {self.prefer_hostname}
+    prefer IP: {self.prefer_ip}
     url override: {self.url_override}
     hide RaspiWiFi instructions: {self.hide_raspiwifi_instructions}
     headless (hide splash): {self.hide_splash_screen}
@@ -147,15 +146,11 @@ class Karaoke:
             logging.debug("Overriding URL with " + self.url_override)
             self.url = self.url_override
         else:
-            if (self.prefer_hostname):
-                self.url = f"http://{socket.getfqdn().lower()}:{self.port}"
-            else:
+            if (self.prefer_ip):
                 self.url = f"http://{self.ip}:{self.port}" 
+            else:
+                self.url = f"http://{socket.getfqdn().lower()}:{self.port}"
         self.url_parsed = urlparse(self.url)
-        if ffmpeg_url is None:
-            self.ffmpeg_url = f"{self.url_parsed.scheme}://{self.url_parsed.hostname}:{self.ffmpeg_port}"
-        else:
-            self.ffmpeg_url = ffmpeg_url
 
         # get songs from download_path
         self.get_available_songs()
@@ -365,7 +360,7 @@ class Karaoke:
     def play_file(self, file_path, semitones=0):
         logging.info(f"Playing file: {file_path} transposed {semitones} semitones")
         stream_uid = int(time.time())
-        stream_url = f"{self.ffmpeg_url}/{stream_uid}"
+        stream_url = f"{self.url_parsed.scheme}://{self.url_parsed.hostname}:{self.ffmpeg_port}/{stream_uid}"
         # pass a 0.0.0.0 IP to ffmpeg which will work for both hostnames and direct IP access
         ffmpeg_url = f"http://0.0.0.0:{self.ffmpeg_port}/{stream_uid}"
 
