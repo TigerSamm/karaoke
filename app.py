@@ -881,29 +881,6 @@ if __name__ == "__main__":
     )
     cherrypy.engine.start()
 
-    # Start the splash screen using selenium
-    if not args.hide_splash_screen: 
-        if platform == "raspberry_pi":
-            service = Service(executable_path='/usr/bin/chromedriver')
-        else: 
-            service = None
-        options = Options()
-
-        if args.window_size:
-            options.add_argument("--window-size=%s" % (args.window_size))
-            options.add_argument("--window-position=0,0")
-            
-        options.add_argument("--kiosk")
-        options.add_argument("--start-maximized")
-        options.add_experimental_option("excludeSwitches", ['enable-automation'])
-        driver = webdriver.Chrome(service=service, options=options)
-        driver.get(f"{k.url}/splash" )
-        driver.add_cookie({'name': 'user', 'value': 'PiKaraoke-Host'})
-        # Clicking this counts as an interaction, which will allow the browser to autoplay audio
-        wait = WebDriverWait(driver, 60)
-        elem = wait.until(EC.element_to_be_clickable((By.ID, "permissions-button")))
-        elem.click()
-
     # Start the karaoke process
     k.run()
 
